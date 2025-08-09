@@ -1,25 +1,27 @@
-function kcx() {
+function kxg() {
     local context_name=$(kubectx | grep $1)
     if [[ ! -z "$context_name" ]]; then
         kubectx "$context_name"
     else
         echo "Context not found."
-    fi
-}
+    fi                                                                                         }
 
-function kcns() {
+function kng() {
     local namespace_name=$(kubens | grep $1)
     if [[ ! -z "$namespace_name" ]]; then
-        kubens "$namespace_name"
-    else
+        kubens "$namespace_name"                                                                   else
         echo "Namespace not found."
     fi
 }
 
 function kep() {
-    local pod_name=$(kubectl get pods | grep $1 | awk '{print $1}')
+    local pod_name=$(kubectl get pods | grep $1 | awk '{print $1}' | head -n1)
     if [[ ! -z "$pod_name" ]]; then
-        kubectl exec -it "$pod_name" -- sh -c 'clear;(bash)'
+        if [[ -n "$2" ]]; then
+            kubectl exec -it "$pod_name" -- $2
+        else
+            kubectl exec -it "$pod_name" -- sh -c "clear; echo 'Exec pod: $pod_name'; bash"
+        fi
     else
         echo "Pod not found."
     fi
@@ -59,7 +61,7 @@ rfe() {
 }
 
 
-kfzf() {
+kfz() {
   local command=$1
   shift
 
@@ -80,7 +82,8 @@ EOF
   current_namespace=$(kubectl config view --minify --output 'jsonpath={..namespace}')
 
   case "$command" in
-    p)                                                                                                  command='kubectl get pods --sort-by=.metadata.creationTimestamp'
+    p)
+      command='kubectl get pods --sort-by=.metadata.creationTimestamp'
       fzf --exact \
         --header-lines 1 --tac --scheme history \
         --border-label ' PODS ' \
@@ -89,9 +92,9 @@ EOF
         --bind "start:reload:$command" \
         --bind "ctrl-r:reload:$command" \
         --bind 'ctrl-/:change-preview-window(80%,border-bottom|hidden|)' \
-        --bind "enter:execute(kubectl logs {1} | fzf --tac)" \
+        --bind "enter:execute(kubectl logs {1} | fzf --exact --tac)" \
         --bind 'ctrl-e:execute:kubectl exec -it {1} -- bash' \
-        --preview-window top,70% \
+        --preview-window top,70%,wrap \
         --preview 'kubectl logs --follow --tail=10000 {1}' "$@"
       ;;
 
@@ -106,19 +109,19 @@ EOF
         --bind "start:reload:$command" \
         --bind "ctrl-r:reload:$command" \
         --bind "enter:execute(kubectl describe deployment {1} | fzf --tac)" \
-        --preview-window top,70% \
+        --preview-window top,70%,wrap \
         --preview 'kubectl describe deployments/{1}'
       ;;
 
     *)
       trap - EXIT
-      echo "usage: kfzf [p|d]
+      echo "usage: kfz [p|d]
   d | Check Deployments
   p | Check Pods" | fzf \
         --header-lines 1 --tac --scheme history \
-        --border-label ' kfzf ' \
+        --border-label ' kfz ' \
         --prompt "-> " \
-        --bind "enter:execute(bash -i -c 'kfzf {+1}')"
+        --bind "enter:execute(bash -c -i 'kfz {+1}')"
       ;;
   esac
 }
