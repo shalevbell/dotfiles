@@ -1,0 +1,87 @@
+# -----------------------------------------
+# [[ ghostty ]]
+# -----------------------------------------
+
+class = "ghostty.terminal"
+
+term = xterm-256color
+quick-terminal-position = center
+
+# -----------------------------------------
+# window sizing and positioning
+# -----------------------------------------
+window-width = 95
+window-height = 22
+
+# Add padding around the terminal content for better visual spacing
+window-padding-x = 12
+window-padding-y = 8
+
+confirm-close-surface = false
+quit-after-last-window-closed = true
+
+window-theme = "ghostty"
+window-padding-balance = true
+window-inherit-working-directory = true
+
+# -----------------------------------------
+# fonts
+# -----------------------------------------
+
+font-size = 22.5
+font-family = "JetBrains Mono"
+
+bold-is-bright = true
+font-style = Bold
+font-style-bold = Bold
+font-style-italic = Bold Italic
+font-style-bold-italic = Bold Italic
+
+adjust-cell-width = +0
+adjust-cell-height = +1
+adjust-font-baseline = +1
+adjust-box-thickness = +50%
+
+
+# -----------------------------------------
+# shell
+# -----------------------------------------
+cursor-style = "bar"
+
+adjust-cursor-height = +2
+adjust-cursor-thickness = +1
+
+copy-on-select = clipboard
+mouse-hide-while-typing = true
+
+shell-integration = "detect"
+shell-integration-features = "no-cursor"
+
+# -----------------------------------------
+# color scheme
+# -----------------------------------------
+
+background-opacity = 0.95
+
+background = "#24273a"
+foreground = "#cad3f5"
+
+cursor-color = "#f4dbd6"
+
+#https://www.ditig.com/256-colors-cheat-sheet
+palette = 0=#181926
+palette = 1=#ed8796
+palette = 2=#a6da95
+palette = 3=#eed49f
+palette = 4=#8aadf4
+palette = 5=#f5bde6
+palette = 6=#8bd5ca
+palette = 7=#cad3f5
+palette = 8=#5b6078
+palette = 9=#ed8796
+palette = 10=#a6da95
+palette = 11=#eed49f
+palette = 12=#8aadf4
+palette = 13=#f5bde6
+palette = 14=#8bd5ca
+palette = 15=#b8c0e0

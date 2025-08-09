@@ -1,0 +1,127 @@
+function kxg() {
+    local context_name=$(kubectx | grep $1)
+    if [[ ! -z "$context_name" ]]; then
+        kubectx "$context_name"
+    else
+        echo "Context not found."
+    fi                                                                                         }
+
+function kng() {
+    local namespace_name=$(kubens | grep $1)
+    if [[ ! -z "$namespace_name" ]]; then
+        kubens "$namespace_name"                                                                   else
+        echo "Namespace not found."
+    fi
+}
+
+function kep() {
+    local pod_name=$(kubectl get pods | grep $1 | awk '{print $1}' | head -n1)
+    if [[ ! -z "$pod_name" ]]; then
+        if [[ -n "$2" ]]; then
+            kubectl exec -it "$pod_name" -- $2
+        else
+            kubectl exec -it "$pod_name" -- sh -c "clear; echo 'Exec pod: $pod_name'; bash"
+        fi
+    else
+        echo "Pod not found."
+    fi
+}
+
+function skctl() {
+    current_context=$(kubectl config current-context)
+    current_namespace=$(kubectl config view --minify --output 'jsonpath={..namespace}')
+
+    echo "Current Kubernetes context: $current_context"
+    echo "Current namespace: $current_namespace"
+}
+
+
+function kgpx() {
+    kcx $1
+    kcns $2
+    kubectl get pods
+}
+
+function kchk() {
+  for eachContext in $(kubectx)
+  do
+    echo $eachContext
+    kubectl get pods --context=$eachContext -A | grep -vP '(Running|Completed|Terminating|ContainerCreating|Init:)'
+  done
+}
+
+rfe() {
+  local cmd="$1"
+  shift
+
+  for var in "$@"; do
+    echo "----------------------"
+    eval "${cmd//@/${var}}"
+  done
+}
+
+
+kfz() {
+  local command=$1
+  shift
+
+  boxit() {
+    local line
+    while read line; do
+      echo "${line#[[:space:]]}"
+    done <<< "$1"
+  }
+
+  read -r -d '' divider << 'EOF'
+    awk '{print} FNR==1 {gsub(/./, "▔", $0); print}'
+EOF
+
+  [[ $1 == -- ]] && trap "kfzf \"$command\"" EXIT
+
+  local current_namespace
+  current_namespace=$(kubectl config view --minify --output 'jsonpath={..namespace}')
+
+  case "$command" in
+    p)
+      command='kubectl get pods --sort-by=.metadata.creationTimestamp'
+      fzf --exact \
+        --header-lines 1 --tac --scheme history \
+        --border-label ' PODS ' \
+        --prompt "Fuzzy search -> " \
+        --header "$(boxit 'Enter (Search logs) │ CTRL-E (kubectl exec) │ CTRL-R (reload)>')" \
+        --bind "start:reload:$command" \
+        --bind "ctrl-r:reload:$command" \
+        --bind 'ctrl-/:change-preview-window(80%,border-bottom|hidden|)' \
+        --bind "enter:execute(kubectl logs {1} | fzf --exact --tac)" \
+        --bind 'ctrl-e:execute:kubectl exec -it {1} -- bash' \
+        --preview-window top,70%,wrap \
+        --preview 'kubectl logs --follow --tail=10000 {1}' "$@"
+      ;;
+
+    d)
+      command='kubectl get deployments'
+      fzf --exact \
+        --header-lines 1 --tac --scheme history \
+        --border-label ' DEPLOYMENTS ' \
+        --prompt "Fuzzy search -> " \
+        --header "$(boxit 'Enter (Search describe) | CTRL-R (reload)>')" \
+        --bind 'enter:ignore' \
+        --bind "start:reload:$command" \
+        --bind "ctrl-r:reload:$command" \
+        --bind "enter:execute(kubectl describe deployment {1} | fzf --tac)" \
+        --preview-window top,70%,wrap \
+        --preview 'kubectl describe deployments/{1}'
+      ;;
+
+    *)
+      trap - EXIT
+      echo "usage: kfz [p|d]
+  d | Check Deployments
+  p | Check Pods" | fzf \
+        --header-lines 1 --tac --scheme history \
+        --border-label ' kfz ' \
+        --prompt "-> " \
+        --bind "enter:execute(bash -c -i 'kfz {+1}')"
+      ;;
+  esac
+}
