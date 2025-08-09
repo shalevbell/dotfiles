@@ -4,12 +4,14 @@ function kxg() {
         kubectx "$context_name"
     else
         echo "Context not found."
-    fi                                                                                         }
+    fi
+}
 
 function kng() {
     local namespace_name=$(kubens | grep $1)
     if [[ ! -z "$namespace_name" ]]; then
-        kubens "$namespace_name"                                                                   else
+        kubens "$namespace_name"
+    else
         echo "Namespace not found."
     fi
 }
