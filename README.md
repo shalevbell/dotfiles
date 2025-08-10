@@ -8,6 +8,19 @@ To symlink all dotfiles in the `stow` directory to home:
 
 ```bash
 cd stow
-stow --target="$HOME" .
+stow --target="$HOME" *
+```
+
+To symlink a single package reference it directly:
+
+```bash
+cd stow
+stow --target="$HOME" zshrc
+```
+
+To remove all symlinks:
+```bash
+cd stow
+stow --target="$HOME" -D *
 ```
 
