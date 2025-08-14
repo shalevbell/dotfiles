@@ -13,6 +13,8 @@ for file in ~/._*functions; do
   [[ -f "$file" ]] && source "$file"
 done
 
+[ -f ~/.work ] && source ~/.work
+
 alias ll='ls -al'
 alias python="python3"
 alias g="git"
