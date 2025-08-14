@@ -1,3 +1,6 @@
+# Aliases
+alias reload='case "$0" in *bash*) source ~/.bashrc;; *zsh*) source ~/.zshrc;; esac'
+
 # Functions
 rfe() {
   local cmd="$1"
