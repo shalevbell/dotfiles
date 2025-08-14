@@ -1,3 +1,27 @@
+# Aliases
+alias k="kubectl"
+alias kx="/usr/local/bin/kubectx"
+alias kn="/usr/local/bin/kubens"
+alias ke="kubectl exec -it"
+alias kl="kubectl logs"
+alias kg="kubectl get"
+alias ktn="kubectl top no --use-protocol-buffers"
+alias ktp="kubectl top pod --use-protocol-buffers"
+alias kd="kubectl describe"
+alias kni="kubectl get nodes -o=custom-columns=NODE:.metadata.name,MAX_PODS:.status.allocatable.pods,CAPACITY_PODS:.status.capacity.pods,INSTANCE_TYPE:.metadata.labels.\"node\.kubernetes\.io/instance-type\",ARCH:.status.nodeInfo.architecture,NODE_NAME:.metadata.labels.\"kubernetes\.io/hostname\""
+alias kgn="kg nodes"
+alias kgp="kg pods"
+alias kgpa="kgp -A"
+alias kgpw="kgp -owide"
+alias kgd="kg deployment"
+alias kgr="kg rollout"
+alias kdp="kd pods"
+alias kdd="kd deployment"
+alias kdr="kd rollout"
+alias kdds="kd daemonset"
+alias kgpn="kgp --output=jsonpath={.items..metadata.name}"
+
+# Functions
 function kxg() {
     local context_name=$(kubectx | grep $1)
     if [[ ! -z "$context_name" ]]; then
@@ -37,7 +61,6 @@ function skctl() {
     echo "Current namespace: $current_namespace"
 }
 
-
 function kgpx() {
     kcx $1
     kcns $2
@@ -51,17 +74,6 @@ function kchk() {
     kubectl get pods --context=$eachContext -A | grep -vP '(Running|Completed|Terminating|ContainerCreating|Init:)'
   done
 }
-
-rfe() {
-  local cmd="$1"
-  shift
-
-  for var in "$@"; do
-    echo "----------------------"
-    eval "${cmd//@/${var}}"
-  done
-}
-
 
 kfz() {
   local command=$1

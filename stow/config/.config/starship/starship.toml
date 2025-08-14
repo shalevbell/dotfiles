@@ -1,26 +1,26 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 
 format = """
-[](red)\
+[](one)\
 $os\
 $username\
-[](bg:peach fg:red)\
+[](bg:two fg:one)\
 $directory\
-[](bg:yellow fg:peach)\
+[](bg:three fg:two)\
 $git_branch\
 $git_status\
-[](fg:yellow bg:green)\
+[](fg:three bg:four)\
 $c\
 $rust\
 $golang\
 $nodejs\
 $php\
 $python\
-[](fg:green bg:sapphire)\
+[](fg:four bg:five)\
 $conda\
-[](fg:sapphire bg:lavender)\
+[](fg:five bg:six)\
 $time\
-[ ](fg:lavender)\
+[ ](fg:six)\
 $fill\
 $cmd_duration\
 $line_break\
@@ -30,7 +30,7 @@ palette = 'catppuccin_frappe'
 
 [os]
 disabled = false
-style = "bg:red fg:crust"
+style = "bg:one fg:surface0"
 
 [os.symbols]
 Macos = "󰀵"
@@ -47,12 +47,12 @@ style = "bold italic grey"
 
 [username]
 show_always = true
-style_user = "bg:red fg:crust"
-style_root = "bg:red fg:crust"
+style_user = "bg:one fg:surface0"
+style_root = "bg:one fg:surface0"
 format = '[ $user]($style)'
 
 [directory]
-style = "bg:peach fg:crust"
+style = "bg:two fg:surface0"
 format = "[ $path ]($style)"
 truncation_length = 3
 truncation_symbol = "…/"
@@ -66,73 +66,60 @@ truncation_symbol = "…/"
 
 [git_branch]
 symbol = ""
-style = "bg:yellow"
-format = '[[ $symbol $branch ](fg:crust bg:yellow)]($style)'
+style = "bg:three"
+format = '[[ $symbol $branch ](fg:surface0 bg:three)]($style)'
 
 [git_status]
-style = "bg:yellow"
-format = '[[($all_status$ahead_behind )](fg:crust bg:yellow)]($style)'
+style = "bg:three"
+format = '[[($all_status$ahead_behind )](fg:surface0 bg:three)]($style)'
 
 [nodejs]
 symbol = ""
-style = "bg:green"
-format = '[[ $symbol( $version) ](fg:crust bg:green)]($style)'
+style = "bg:four"
+format = '[[ $symbol( $version) ](fg:surface0 bg:four)]($style)'
 
 [c]
 symbol = " "
-style = "bg:green"
-format = '[[ $symbol( $version) ](fg:crust bg:green)]($style)'
+style = "bg:four"
+format = '[[ $symbol( $version) ](fg:surface0 bg:four)]($style)'
 
 [rust]
 symbol = ""
-style = "bg:green"
-format = '[[ $symbol( $version) ](fg:crust bg:green)]($style)'
+style = "bg:four"
+format = '[[ $symbol( $version) ](fg:surface0 bg:four)]($style)'
 
 [golang]
 symbol = ""
-style = "bg:green"
-format = '[[ $symbol( $version) ](fg:crust bg:green)]($style)'
+style = "bg:four"
+format = '[[ $symbol( $version) ](fg:surface0 bg:four)]($style)'
 
 [php]
 symbol = ""
-style = "bg:green"
-format = '[[ $symbol( $version) ](fg:crust bg:green)]($style)'
-
-[docker_context]
-symbol = ' '
-style = 'fg:#06969A'
-format = '[$symbol]($style) $path'
-detect_files = ['docker-compose.yml', 'docker-compose.yaml', 'Dockerfile']
-detect_extensions = ['Dockerfile']
+style = "bg:four"
+format = '[[ $symbol( $version) ](fg:surface0 bg:four)]($style)'
 
 [python]
-symbol = "🐍 "
+symbol = " 🐍 "
 #pyenv_version_name = true
 format = '[${symbol}python (${version} )(\($virtualenv\) )]($style)'
-style = "green"
+style = "fg:surface0 bg:four"
 pyenv_prefix = "venv "
 python_binary = ["./venv/bin/python", "python", "python3", "python2"]
 detect_extensions = ["py"]
 version_format = "v${raw}"
 
-[conda]
-symbol = "  "
-style = "fg:crust bg:sapphire"
-format = '[$symbol$environment ]($style)'
-ignore_base = false
-
 [time]
 disabled = false
 time_format = "%R"
-style = "bg:lavender"
-format = '[[  $time ](fg:crust bg:lavender)]($style)'
+style = "bg:six"
+format = '[[  $time ](fg:surface0 bg:six)]($style)'
 
 [line_break]
 disabled = true
 
 # Replace the "❯" symbol in the prompt with "➜"
-[character]                            # The name of the module we are configuring is "character"
-success_symbol = "[➜](bold grey)"     # The "success_symbol" segment is being set to "➜"
+[character]
+success_symbol = "[➜](bold grey)"  
 error_symbol = "[✗](bold red)"
 
 [palettes.catppuccin_mocha]
@@ -190,6 +177,12 @@ surface0 = "#414559"
 base = "#303446"
 mantle = "#292c3c"
 crust = "#232634"
+one = "#91ac9a"
+two = "#a9c3b6"
+three = "#cedfdf"
+four = "#b7d1d3"
+five = "#a6c3ce"
+six = "#8fb8ca"
 
 [palettes.catppuccin_latte]
 rosewater = "#dc8a78"
