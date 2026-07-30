@@ -62,9 +62,9 @@ shell-integration-features = "no-cursor"
 # color scheme
 # -----------------------------------------
 
-background-opacity = 0.99
+background-opacity = 0.96
 
-background = "#24273a"
+background = "#242436"
 foreground = "#cad3f5"
 
 cursor-color = "#f4dbd6"
