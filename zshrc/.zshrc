@@ -21,6 +21,11 @@ for file in ~/._*functions; do
   [[ -f "$file" ]] && source "$file"
 done
 
+# Refresh fzf directory cache in the background on interactive shell start
+if [[ -o interactive ]] && typeset -f _fzf_dirs_rebuild >/dev/null; then
+  (_fzf_dirs_rebuild &) >/dev/null 2>&1
+fi
+
 # Source work-specific config if it exists
 [[ -f ~/.work ]] && source ~/.work
 
