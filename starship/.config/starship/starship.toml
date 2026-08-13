@@ -18,6 +18,7 @@ $nodejs\
 $php\
 $python\
 $conda\
+$aws\
 $fill\
 $time\
 $cmd_duration\
@@ -47,7 +48,7 @@ show_always = true
 format = '[$user ]($style)'
 
 [kubernetes]
-format = '[⎈$context\($namespace\)]($style) '
+format = '[⎈ $context\($namespace\)]($style) '
 disabled = false
 
 [directory]
@@ -104,6 +105,12 @@ pyenv_prefix = "venv "
 python_binary = ["./venv/bin/python", "python", "python3", "python2"]
 detect_extensions = ["py"]
 version_format = "v${raw}"
+
+[aws]
+symbol = "  "
+style = "bg:five"
+format = '[[$symbol($profile )(\($region\) )]()]($style)'
+disabled = false
 
 [time]
 disabled = false
